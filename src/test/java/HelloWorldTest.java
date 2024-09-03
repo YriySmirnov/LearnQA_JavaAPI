@@ -12,8 +12,19 @@ public class HelloWorldTest {
                 .follow(false)
                 .get("https://playground.learnqa.ru/api/long_redirect")
                 .andReturn();
+        int statusCod = response.getStatusCode();
 
-        String Location = response.getHeader("Location");
-        System.out.println(Location);
+        while (statusCod == 301) {
+            String location = response.getHeader("Location");
+            System.out.println(location);
+            response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .get(location)
+                    .andReturn();
+            statusCod = response.getStatusCode();
+            System.out.println(statusCod);
+        }
     }
 }

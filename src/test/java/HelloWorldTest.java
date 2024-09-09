@@ -1,9 +1,11 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HelloWorldTest {
 
@@ -16,10 +18,9 @@ public class HelloWorldTest {
         Response response = RestAssured
                     .given()
                     .body(userAuth)
-                .get("https://playground.learnqa.ru/api/homework_cookie")
+                .get("https://playground.learnqa.ru/api/homework_header")
                 .andReturn();
-
-        Map<String, String> responseCookie = response.getCookies();
-        Assertions.assertEquals("hw_value", responseCookie.get("HomeWork"), "Cookie not correct");
+        Headers responseHeader = response.getHeaders();
+        Assertions.assertEquals("Some secret value", responseHeader.getValue("x-secret-homework-header"), "Header not have homework");
     }
 }

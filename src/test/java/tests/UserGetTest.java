@@ -19,9 +19,7 @@ public class UserGetTest extends BaseTestCase {
     @Description("Получить данные о пользователе не авторизуясь")
     @DisplayName("Test get data user on auth")
     public void testCreateUserDataNotAuth() {
-        Response responseUserData = RestAssured
-                .get("https://playground.learnqa.ru/api/user/2")
-                .thenReturn();
+        Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/2");
 
         String[] expectedFields = {"username"};
         String[] unexpectedFields = {"email", "firstName", "lastName"};
@@ -38,21 +36,12 @@ public class UserGetTest extends BaseTestCase {
         userData.put("email", "vinkotov@example.com");
         userData.put("password", "1234");
 
-        Response responseGetAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/login")
-                .thenReturn();
+        Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", userData);
 
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
-        String header = this.getHeader(responseGetAuth, "x-csrf-token");
+        String token = this.getHeader(responseGetAuth, "x-csrf-token");
 
-        Response responseUserData = RestAssured
-                .given()
-                .header("x-csrf-token", header)
-                .cookies("auth_sid", cookie)
-                .get("https://playground.learnqa.ru/api/user/2")
-                .thenReturn();
+        Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/2", token, cookie);
 
         String[] expectedFields = {"email", "username", "firstName", "lastName"};
 
@@ -70,14 +59,9 @@ public class UserGetTest extends BaseTestCase {
         Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", userData);
 
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
-        String header = this.getHeader(responseGetAuth, "x-csrf-token");
+        String token = this.getHeader(responseGetAuth, "x-csrf-token");
 
-        Response responseUserData = RestAssured
-                .given()
-                .header("x-csrf-token", header)
-                .cookies("auth_sid", cookie)
-                .get("https://playground.learnqa.ru/api/user/3")
-                .thenReturn();
+        Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/3", token, cookie);
 
         String[] expectedFields = {"username"};
         String[] unexpectedFields = {"email", "firstName", "lastName"};

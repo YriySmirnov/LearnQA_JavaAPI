@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BaseTestCase {
+    protected String baseUrl = "https://playground.learnqa.ru/api_dev";
     protected final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     protected String getHeader(Response response, String name) {

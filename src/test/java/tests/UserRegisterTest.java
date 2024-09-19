@@ -10,6 +10,7 @@ import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +26,7 @@ public class UserRegisterTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @Test
+    @Tag("Test")
     @Description("Создание пользователя с существующей почтой")
     @DisplayName("Test negative auth replay email")
     public void testCreateUserWithExistingEmail() {
@@ -35,13 +37,14 @@ public class UserRegisterTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 400);
         Assertions.assertResponseTextEquals(responseCreateAuth, "Users with email '" + email + "' already exists");
     }
 
     @Test
+    @Tag("Test")
     @Description("Создание пользователя")
     @DisplayName("Test positive auth")
     public void testCreateUserWithSuccessEmail() {
@@ -52,13 +55,14 @@ public class UserRegisterTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 200);
         Assertions.assertJsonHasKey(responseCreateAuth, "id");
     }
 
     @Test
+    @Tag("Test")
     @Description("Создание пользователе с почтой без @")
     @DisplayName("Test negative auth email without @")
     public void testCreateUserWithEmailError() {
@@ -69,12 +73,13 @@ public class UserRegisterTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 400);
         Assertions.assertResponseTextEquals(responseCreateAuth, "Invalid email format");
     }
 
+    @Tag("Test")
     @ParameterizedTest
     @Description("Создание пользователе без параметра {data}")
     @DisplayName("Test negative auth")
@@ -89,13 +94,14 @@ public class UserRegisterTest extends BaseTestCase {
         userData.remove(data);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 400);
         Assertions.assertResponseTextEquals(responseCreateAuth, "The following required params are missed: " + data);
     }
 
     @Test
+    @Tag("Test")
     @Description("Создание пользователе с коротким именем")
     @DisplayName("Test negative short name")
     public void testCreateUserWithShortName() {
@@ -105,13 +111,14 @@ public class UserRegisterTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 400);
         Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'username' field is too short");
     }
 
     @Test
+    @Tag("Test")
     @Description("Создание пользователе с длинным именем")
     @DisplayName("Test negative long name")
     public void testCreateUserWithLongName() {
@@ -121,7 +128,7 @@ public class UserRegisterTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+                .makePostRequest(baseUrl + "/user/", userData);
 
         Assertions.assertResponseCodEquals(responseCreateAuth, 400);
         Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'username' field is too long");

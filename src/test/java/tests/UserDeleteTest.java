@@ -9,6 +9,7 @@ import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class UserDeleteTest extends BaseTestCase {
 
     @Test
+    @Tag("Test")
     @Description("Удаление не удаляемого пользователя")
     @DisplayName("Test delete auth user")
     public void testDelAuthBlockUserTest() {
@@ -47,6 +49,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Tag("Test")
     @Description("Удаление созданного пользователя")
     @DisplayName("Test delete creation user")
     public void testDelCreatedUserTest() {
@@ -76,6 +79,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Tag("Test")
     @Description("Удаление созданного пользователя другим пользователем")
     @DisplayName("Test delete creation user anther")
     public void testDelCreatedUserAntherTest() {

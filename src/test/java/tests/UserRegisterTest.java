@@ -20,7 +20,7 @@ import java.util.Map;
 import static lib.DataGenerator.getRandomEmail;
 
 @Epic("Authorization cases")
-@Feature("Authorization")
+@Feature("User Creation")
 public class UserRegisterTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
